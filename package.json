@@ -1,0 +1,27 @@
+{
+  "name": "backend0",
+  "version": "1.0.0",
+  "description": "HEHE",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quangneyy/backend0.git"
+  },
+  "keywords": [
+    "nodejs",
+    "react"
+  ],
+  "author": "quangney",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/quangneyy/backend0/issues"
+  },
+  "homepage": "https://github.com/quangneyy/backend0#readme",
+  "dependencies": {
+    "express": "4.18.2"
+  }
+}
