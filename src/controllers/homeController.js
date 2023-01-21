@@ -8,7 +8,7 @@ const getQuangNey = (req, res) => {
   res.render("sample.ejs");
 };
 
-const postCreateUser = (req, res) => {
+const postCreateUser = async (req, res) => {
   let email = req.body.email;
   let name = req.body.myname;
   let city = req.body.city;
@@ -17,19 +17,21 @@ const postCreateUser = (req, res) => {
 
   // let { email, name, city } = req.body;
 
-  connection.query(
+  let [results, fields] = await connection.query(
     `INSERT INTO Users (email, name, city) VALUES (?, ?, ?)`,
-    [email, name, city],
-    function (err, results) {
-      console.log(results);
-
-      res.send("Created user succeed !");
-    }
+    [email, name, city]
   );
+
+  res.send("Created user succeed !");
+};
+
+const getCreatePage = (req, res) => {
+  res.render("create.ejs");
 };
 
 module.exports = {
   getHomepage,
   getQuangNey,
   postCreateUser,
+  getCreatePage,
 };

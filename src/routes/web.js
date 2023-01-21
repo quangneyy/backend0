@@ -3,6 +3,7 @@ const {
   getHomepage,
   getQuangNey,
   postCreateUser,
+  getCreatePage,
 } = require("../controllers/homeController");
 const router = express.Router();
 
@@ -11,6 +12,8 @@ const router = express.Router();
 // khai bao route
 router.get("/", getHomepage);
 router.get("/quangney", getQuangNey);
+
+router.get("/create", getCreatePage);
 
 router.post("/create-user", postCreateUser);
 
