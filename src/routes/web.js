@@ -4,6 +4,7 @@ const {
   getQuangNey,
   postCreateUser,
   getCreatePage,
+  getUpdatePage,
 } = require("../controllers/homeController");
 const router = express.Router();
 
@@ -14,6 +15,7 @@ router.get("/", getHomepage);
 router.get("/quangney", getQuangNey);
 
 router.get("/create", getCreatePage);
+router.get("/update", getUpdatePage);
 
 router.post("/create-user", postCreateUser);
 
