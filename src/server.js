@@ -4,7 +4,6 @@ const express = require("express"); //commonjs
 const configViewEngine = require("./config/viewEngine");
 const webRoutes = require("./routes/web");
 const connection = require("./config/database");
-const Kitten = require("./models/Kitten");
 
 const app = express(); // app express
 const port = process.env.PORT || 8888; // port => hard . uat . prod
@@ -14,14 +13,11 @@ const hostname = process.env.HOST_NAME;
 app.use(express.json()); // for json
 app.use(express.urlencoded({ extended: true })); // for form data
 
-// config template engine
+// config template en dgine
 configViewEngine(app);
 
 // khai bao route
 app.use("/", webRoutes);
-
-const cat = new Kitten({ name: "Quang Ney cat model" });
-cat.save();
 
 (async () => {
   try {
