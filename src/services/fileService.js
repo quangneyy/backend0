@@ -1,20 +1,32 @@
-const { json } = require("express");
+const path = require("path");
 
 const uploadSingleFile = async (fileObject) => {
   // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-  let uploadPath = __dirname + fileObject.name;
 
-  // Use the mv() method to place the file somewhere on your server
+  // save => public/images/upload
+  //remember to create the upload folder first
+  let uploadPath = path.resolve(__dirname, "../public/images/upload");
+  // console.log(">>> check fileObject: ", path.resolve(__dirname, "../public/images/upload"))
 
-  // save => public/image/upload
   // abc.png => abc-timestamp.png
-  // upload multiple files
+
+  //get image extension
+  let extName = path.extname(fileObject.name);
+
+  //get image's name (without extension)
+  let baseName = path.basename(fileObject.name, extName);
+
+  //create final path: eg: /upload/your-image.png
+  let finalName = `${baseName}-${Date.now()}${extName}`;
+  let finalPath = `${uploadPath}/${finalName}`;
+
+  // console.log("final path: ", finalPath)
 
   try {
-    await fileObject.mv(uploadPath);
+    await fileObject.mv(finalPath);
     return {
       status: "success",
-      path: "link-image",
+      path: finalName,
       error: null,
     };
   } catch (err) {
@@ -25,15 +37,52 @@ const uploadSingleFile = async (fileObject) => {
       error: JSON.stringify(err),
     };
   }
-
-  fileObject.mv(uploadPath, function (err) {
-    if (err) {
-      console.log(">>> check err: ", __dirname);
-    }
-  });
 };
 
-const uploadMultipleFiles = () => {};
+const uploadMultipleFiles = async (filesArr) => {
+  console.log(">>> filesArr: " + JSON.stringify(filesArr));
+  try {
+    let uploadPath = path.resolve(__dirname, "../public/images/upload");
+    let resultArr = [];
+    let countSuccess = 0;
+    for (let i = 0; i < filesArr.length; i++) {
+      //get image extension
+      let extName = path.extname(filesArr[i].name);
+
+      //get image's name (without extension)
+      let baseName = path.basename(filesArr[i].name, extName);
+
+      //create final path: eg: /upload/your-image.png
+      let finalName = `${baseName}-${Date.now()}${extName}`;
+      let finalPath = `${uploadPath}/${finalName}`;
+
+      try {
+        await filesArr[i].mv(finalPath);
+        resultArr.push({
+          status: "success",
+          path: finalName,
+          fileName: filesArr[i].name,
+          error: null,
+        });
+        countSuccess++;
+      } catch (err) {
+        resultArr.push({
+          status: "failed",
+          path: null,
+          fileName: filesArr[i].name,
+          error: JSON.stringify(err),
+        });
+      }
+    }
+
+    return {
+      countSuccess: countSuccess,
+      detail: resultArr,
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 module.exports = {
   uploadSingleFile,
