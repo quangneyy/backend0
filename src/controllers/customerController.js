@@ -5,6 +5,7 @@ const {
   getAllCustomerService,
   putUpdateCustomerService,
   deleteACustomerService,
+  deleteArrayCustomerService,
 } = require("../services/customerService");
 
 // {key: value}
@@ -53,7 +54,15 @@ module.exports = {
   },
 
   getAllCustomers: async (req, res) => {
-    let result = await getAllCustomerService();
+    console.log(req.query);
+    let limit = req.query.limit;
+    let page = req.query.page;
+    let result = null;
+    if (limit && page) {
+      result = await getAllCustomerService(limit, page);
+    } else {
+      result = await getAllCustomerService();
+    }
     return res.status(200).json({
       EC: 0,
       data: result,
@@ -74,6 +83,16 @@ module.exports = {
 
     let result = await deleteACustomerService(id);
 
+    return res.status(200).json({
+      EC: 0,
+      data: result,
+    });
+  },
+
+  deleteArrayCustomer: async (req, res) => {
+    let ids = req.body.customerId;
+    console.log(">>> check ids: ", ids);
+    let result = await deleteArrayCustomerService(ids);
     return res.status(200).json({
       EC: 0,
       data: result,
