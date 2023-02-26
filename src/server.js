@@ -19,7 +19,7 @@ app.use(fileUpload());
 app.use(express.json()); // for json
 app.use(express.urlencoded({ extended: true })); // for form data
 
-// config template en engine
+// config template en dgine
 configViewEngine(app);
 
 // khai bao route
@@ -29,10 +29,10 @@ app.use("/v1/api/", apiRoutes);
 (async () => {
   try {
     // using mongoose
-    // await connection();
+    await connection();
 
     // using mongodb driver
-    // Connection URL
+    //  Connection URL
     const url = process.env.DB_HOST_WITH_DRIVER;
     const client = new MongoClient(url);
 
@@ -45,11 +45,16 @@ app.use("/v1/api/", apiRoutes);
     const db = client.db(dbName);
     const collection = db.collection("customers");
 
-    // collection.insertOne({ name: "Quang Ney" });
-    let a = await collection.findOne({ address: "Tay Ninh" });
-    console.log(">>> find = ", a);
-
-    //
+    // collection.insertOne({
+    //   name: "Quang Ney",
+    //   address: {
+    //     province: "hcm",
+    //     country: {
+    //       name: "vietnam",
+    //       code: 10000,
+    //     },
+    //   },
+    // });
 
     app.listen(port, hostname, () => {
       console.log(`Backend zero app listening on port ${port}`);
