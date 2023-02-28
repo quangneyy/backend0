@@ -17,6 +17,27 @@ module.exports = {
       return newResult;
     }
 
+    if (data.type === "REMOVE-USERS") {
+      let myProject = await Project.findById(data.projectId).exec();
+
+      // myProject.usersInfor = myProject.usersInfor.filter(
+      //   (item) => !data.usersArr.includes(item)
+      // );
+
+      // console.log(
+      //   ">>> myProject.usersInfor: ",
+      //   myProject.usersInfor,
+      //   data.usersArr
+      // );
+
+      for (let i = 0; i < data.usersArr.length; i++) {
+        myProject.usersInfor.pull(data.usersArr[1]);
+      }
+
+      let newResult = await myProject.save();
+      return newResult;
+    }
+
     return null;
   },
   getProject: async (queryString) => {
@@ -31,6 +52,15 @@ module.exports = {
       .skip(offset)
       .limit(limit)
       .exec();
+    return result;
+  },
+
+  uProject: async (data) => {
+    let result = await Project.updateOne({ _id: data.id }, { ...data });
+    return result;
+  },
+  dProject: async (id) => {
+    let result = await Project.deleteById(id);
     return result;
   },
 };
